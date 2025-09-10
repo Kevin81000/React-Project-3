@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const login = async (email, password) => {
-    const res = await axios.post("http://localhost:3000/api/auth/login", {
+    const res = await axios.post("const res = await axios.post('https://personal-notes-backend.onrender.com/api/auth/login', { email, password });", {
       email,
       password,
     });
