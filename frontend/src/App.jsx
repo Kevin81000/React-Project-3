@@ -1,10 +1,10 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import Login from './components/Login';
-import Register from './components/Register';
-import Notes from './components/Notes';
-import Categories from './components/Categories';
-import Navbar from './components/Navbar';
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Notes from "./components/Notes";
+import Categories from "./components/Categories";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (

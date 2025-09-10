@@ -1,19 +1,27 @@
-import { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { Box, Button, FormControl, FormLabel, Input, VStack, Text } from '@chakra-ui/react';
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  VStack,
+  Text,
+} from "@chakra-ui/react";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
 
   const handleSubmit = async () => {
     try {
       await login(email, password);
-      setError('');
+      setError("");
     } catch (err) {
-      setError('Invalid credentials');
+      setError("Invalid credentials");
     }
   };
 
@@ -28,9 +36,15 @@ function Login() {
         </FormControl>
         <FormControl>
           <FormLabel>Password</FormLabel>
-          <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </FormControl>
-        <Button onClick={handleSubmit} colorScheme="brand" width="full">Login</Button>
+        <Button onClick={handleSubmit} colorScheme="brand" width="full">
+          Login
+        </Button>
       </VStack>
     </Box>
   );

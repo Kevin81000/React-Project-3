@@ -1,6 +1,6 @@
-import { createContext, useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -9,16 +9,19 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const login = async (email, password) => {
-    const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-    localStorage.setItem('token', res.data.token);
+    const res = await axios.post("http://localhost:3000/api/auth/login", {
+      email,
+      password,
+    });
+    localStorage.setItem("token", res.data.token);
     setUser({ id: res.data.token });
-    navigate('/notes');
+    navigate("/notes");
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setUser(null);
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
