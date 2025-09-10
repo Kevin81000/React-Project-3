@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -18,10 +20,12 @@ function Login() {
 
   const handleSubmit = async () => {
     try {
-      await login(email, password);
-      setError("");
+      const res = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+      login(res.data.token);
+      setError('');
+      navigate('/notes');
     } catch (err) {
-      setError("Invalid credentials");
+      setError('Invalid email or password');
     }
   };
 

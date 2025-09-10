@@ -14,8 +14,10 @@ import {
   Heading,
   SimpleGrid,
   Text,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon } from '@chakra-ui/icons';
 
 function Notes() {
   const [notes, setNotes] = useState([]);
@@ -50,7 +52,7 @@ function Notes() {
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3000/api/notes", {
+      const res = await axios.get("https://personal-notes-backend.onrender.com/api/notes", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotes(res.data);
@@ -111,14 +113,33 @@ function Notes() {
     }
   };
 
+const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+
+
+
+
+
   return (
-    <Box p={4} maxW="1200px" mx="auto" mt={8}>
+   <Box p={4} maxW="1200px" mx="auto" mt={8}>
       <Heading mb={4}>Notes</Heading>
-      {error && (
-        <Text color="red.500" mb={4}>
-          {error}
-        </Text>
-      )}
+      {error && <Text color="red.500" mb={4}>{error}</Text>}
+      <FormControl mb={6}>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <SearchIcon color="gray.300" />
+          </InputLeftElement>
+          <Input
+            placeholder="Search notes by title or content"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </InputGroup>
+      </FormControl>
       <VStack spacing={4} mb={8}>
         <FormControl>
           <FormLabel>Title</FormLabel>
@@ -126,10 +147,7 @@ function Notes() {
         </FormControl>
         <FormControl>
           <FormLabel>Content</FormLabel>
-          <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <Textarea value={content} onChange={(e) => setContent(e.target.value)} />
         </FormControl>
         <FormControl>
           <FormLabel>Category</FormLabel>
@@ -146,30 +164,21 @@ function Notes() {
           </Select>
         </FormControl>
         <Button onClick={handleSubmit} colorScheme="brand" width="full">
-          {editId ? "Update Note" : "Add Note"}
+          {editId ? 'Update Note' : 'Add Note'}
         </Button>
       </VStack>
       <SimpleGrid columns={[1, 2, 3]} spacing={4}>
-        {notes.map((note) => (
+        {filteredNotes.map((note) => (
           <Box key={note._id} p={4} borderWidth="1px" borderRadius="md">
             <Heading size="md">{note.title}</Heading>
             <Text>{note.content}</Text>
             <Text fontSize="sm" color="gray.500">
               Category: {note.categoryId.name}
             </Text>
-            <Button
-              onClick={() => handleEdit(note)}
-              colorScheme="yellow"
-              mr={2}
-              mt={2}
-            >
+            <Button onClick={() => handleEdit(note)} colorScheme="yellow" mr={2} mt={2}>
               Edit
             </Button>
-            <Button
-              onClick={() => handleDelete(note._id)}
-              colorScheme="red"
-              mt={2}
-            >
+            <Button onClick={() => handleDelete(note._id)} colorScheme="red" mt={2}>
               Delete
             </Button>
           </Box>
