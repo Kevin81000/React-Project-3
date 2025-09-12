@@ -14,6 +14,7 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const categories = await Category.find({ userId: req.user.id });

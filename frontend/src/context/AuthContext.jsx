@@ -1,28 +1,34 @@
-import { createContext, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { createContext, useState, useEffect } from 'react';
+import jwtDecode from 'jwt-decode';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
-  const login = async (email, password) => {
-    const res = await axios.post("const res = await axios.post('https://personal-notes-backend.onrender.com/api/auth/login', { email, password });", {
-      email,
-      password,
-    });
-    localStorage.setItem("token", res.data.token);
-    setUser({ id: res.data.token });
-    navigate("/notes");
+  const login = (token) => {
+    localStorage.setItem('token', token);
+    const decoded = jwtDecode(token);
+    setUser(decoded);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
     setUser(null);
-    navigate("/login");
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUser(decoded);
+      } catch (err) {
+        localStorage.removeItem('token');
+        setUser(null);
+      }
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

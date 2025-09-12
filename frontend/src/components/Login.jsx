@@ -17,10 +17,12 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
-
+  const navigate = useNavigate()
   const handleSubmit = async () => {
+    console.log (email, password)
     try {
       const res = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+      console.log (res.data.token)
       login(res.data.token);
       setError('');
       navigate('/notes');
